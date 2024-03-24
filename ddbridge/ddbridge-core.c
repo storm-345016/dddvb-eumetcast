@@ -1451,7 +1451,7 @@ static struct stv0910_cfg stv0910_p = {
 	.parallel = 1,
 	.rptlvl   = 4,
 	.clk      = 30000000,
-	.tsspeed  = 0x20,
+	.tsspeed  = 0x28,
 };
 
 static int has_lnbh25(struct i2c_adapter *i2c, u8 adr)
@@ -2437,7 +2437,7 @@ static void input_write_dvb(struct ddb_input *input,
 			} else
 				dvb_dmx_swfilter(&dvb->demux,
 							 dma2->vbuf[dma->cbuf],
-							 dma2->size / 188);
+							 dma2->size);
 		}
 		//if (alt_dma)
 		//	dma_sync_single_for_device(dev->dev, dma2->pbuf[dma->cbuf],
