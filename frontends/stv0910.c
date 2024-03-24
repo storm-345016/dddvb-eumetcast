@@ -564,6 +564,7 @@ static int tracking_optimization(struct stv *state)
 	write_reg(state, RSTV0910_P2_DMDCFGMD + state->regoff, tmp);
 
 	if (state->receive_mode == RCVMODE_DVBS2) {
+		u8 reg;
 		/* Disable Reed-Solomon */
 		write_shared_reg(state, RSTV0910_TSTTSRS,
 				 state->nr ? 0x02 : 0x01, 0x03);
@@ -592,6 +593,25 @@ static int tracking_optimization(struct stv *state)
 					  state->regoff, aclc);
 			}
 		}
+                read_reg(state, RSTV0910_P2_MATSTR1 + state->regoff, &tmp);
+                read_reg(state, RSTV0910_P2_TSSTATEM + state->regoff, &reg);
+                if ( tmp & 0x18 )
+                        reg &= ~1;
+                else
+                        reg |= 1; /* Disable TS FIFO sync if ACM without ISSYI */
+                write_reg(state, RSTV0910_P2_TSSTATEM + state->regoff, reg);
+
+                read_reg(state, RSTV0910_P2_TSSYNC + state->regoff, &reg);
+                if ( tmp & 0x18 )
+                        reg &= ~0x18;
+                else
+                {
+                        reg &= ~0x18;
+                        reg |= 0x10;
+                }
+                write_reg(state, RSTV0910_P2_TSSYNC + state->regoff, reg);
+                printk("EUMETCast detected, TS nosync enabled");
+
 	}
 	return 0;
 }
