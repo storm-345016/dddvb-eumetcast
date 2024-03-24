@@ -2435,7 +2435,7 @@ static void input_write_dvb(struct ddb_input *input,
 						 dma2->vbuf[dma->cbuf],
 						 dma2->size);
 			} else
-				dvb_dmx_swfilter_packets(&dvb->demux,
+				dvb_dmx_swfilter(&dvb->demux,
 							 dma2->vbuf[dma->cbuf],
 							 dma2->size / 188);
 		}
