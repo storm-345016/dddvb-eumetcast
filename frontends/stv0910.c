@@ -595,6 +595,8 @@ static int tracking_optimization(struct stv *state)
 		}
                 read_reg(state, RSTV0910_P2_MATSTR1 + state->regoff, &tmp);
                 read_reg(state, RSTV0910_P2_TSSTATEM + state->regoff, &reg);
+		/* Let's compare MATYPE C10 versus C3/C4 Ernst Lobsiger */
+		printk("MATYPE detected on this TS %d\n", tmp);
                 if ( tmp & 0x18 )
                         reg &= ~1;
                 else
